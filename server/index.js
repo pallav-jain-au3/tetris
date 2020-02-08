@@ -7,7 +7,7 @@ const {
     registerUser,
     loginUser
 } = require('./routes/routes')
-const auth = require('./models/auth')
+const auth = require('./auth')
 app.use(express.json())
 
 mongoose.connect(process.env.DB_HOST, {
