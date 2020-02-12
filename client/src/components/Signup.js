@@ -1,32 +1,62 @@
-import React, {useState} from 'react';
-import StartButton from './StartButton'
+import React, { useState, useEffect } from "react";
+import StartButton from "./StartButton";
+import { signupUser } from "../redux/actions/userActions";
+import { useSelector, useDispatch } from "react-redux";
 
-export default function Signup() {
-    const initialState = {
-        username :'',
-        email:'',
-        password : ''
+export default function Signup(props) {
+  const initialState = {
+    username: "",
+    email: "",
+    password: ""
+  };
+  const errorsFromBackend = useSelector(state => state.user.errors);
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (JSON.stringify(errors) !== JSON.stringify(errorsFromBackend)) {
+      setErrors(errorsFromBackend);
     }
+  }, [errorsFromBackend]);
+  const handleChange = e => {
+    let { name, value } = e.target;
+    setInput({ ...input, [name]: value });
+  };
 
-    const handleChange = (e) => {
-        let {name,value} = e.target;
-      
-        setInput({...input, [name] : value})
+  const handleSubmit = e => {
+    e.preventDefault();
+    signupUser(input, props.history, dispatch);
+    if (!errors) {
+      setInput(initialState);
     }
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(input)
-        setInput(initialState)
-    }
+  const [input, setInput] = useState(initialState);
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="username"
+        value={input.username}
+        onChange={handleChange}
+        placeholder="Username...."
+      />
 
-   const [input, setInput] = useState(initialState)
-    return (
-        <form onSubmit = {handleSubmit}>
-            <input name = "username" value = {input.username} onChange = {handleChange}  placeholder = "Username...."/>
-            <input name = "email" value = {input.email} onChange = {handleChange}  placeholder = "Email...."/>
-            <input name = "password" value = {input.password} onChange = {handleChange}  placeholder = "Password...."/>
-            <StartButton callback = {handleSubmit}>Submit</StartButton>
-        </form>
-    )
+      {errors.username ? <span>{errors.username}</span> : null}
+      <input
+        name="email"
+        value={input.email}
+        onChange={handleChange}
+        placeholder="Email...."
+      />
+      {errors.email ? <span>{errors.email}</span> : null}
+      <input
+        name="password"
+        value={input.password}
+        onChange={handleChange}
+        placeholder="Password...."
+      />
+      {errors.password ? <span>{errors.password}</span> : null}
+      <StartButton callback={handleSubmit}>Submit</StartButton>
+    </form>
+  );
 }
