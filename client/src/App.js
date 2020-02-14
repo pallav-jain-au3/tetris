@@ -9,17 +9,19 @@ import {Provider} from 'react-redux'
 
 const App = () => (
   <Provider store = {store}>
-  <div className = "app">
+ 
   
    <Router>
     <Switch>
       <Route exact path = '/' component = {Tetris} />
+
       <Route exact path = '/login' component = {Login} />
       <Route exact path = '/signup' component = {Signup} />
+     
     </Switch>
    </Router>
    
-   </div>
+  
    </Provider>
 )
 

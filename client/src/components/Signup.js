@@ -41,22 +41,22 @@ export default function Signup(props) {
         placeholder="Username...."
       />
 
-      {errors.username ? <span>{errors.username}</span> : null}
+      {errors.username ? <span className = "error">{errors.username}</span> : null}
       <input
         name="email"
         value={input.email}
         onChange={handleChange}
         placeholder="Email...."
       />
-      {errors.email ? <span>{errors.email}</span> : null}
+      {errors.email ? <span className = "error">{errors.email}</span> : null}
       <input
         name="password"
         value={input.password}
         onChange={handleChange}
         placeholder="Password...."
       />
-      {errors.password ? <span>{errors.password}</span> : null}
-      <StartButton callback={handleSubmit}>Submit</StartButton>
+      {errors.password ? <span className = "error">{errors.password}</span> : null}
+      <StartButton onClick ={handleSubmit}>Submit</StartButton>
     </form>
   );
 }
