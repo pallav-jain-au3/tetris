@@ -2,6 +2,7 @@ const User = require("../models/User");
 const { registerValidation, loginValidation } = require("../validations");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Score = require('../models/Score')
 
 exports.registerUser = async (req, res) => {
   let { valid, error } = registerValidation(req.body);
@@ -73,11 +74,34 @@ exports.getAuthenticatedUser = async (req, res) => {
   let _id = req.user;
   try {
     const user = await User.findOne({ _id });
-    res.status(200).json({
-      username: user.username,
-      email: user.email
-    });
+   
+    let userData = {}
+      userData.username =  user.username,
+      userData.email=  user.email
+      let scores = user.scores
+      userData.scores = []
+      
+      if (scores.length){
+      let getScores =  () => {
+        return Promise.all(scores.map(score => {
+          let doc =  Score.findById(score._id)
+          return doc
+        }))
+      }
+        getScores()
+        .then(data => {
+          data.forEach(score => {
+           let scoreData = {score :score.score, createdAt : score.createdAt, scoreId :score._id}
+           userData.scores.push(scoreData)
+          })
+        })
+        .then (() =>  res.status(200).json(userData))
+      }
+      else {
+        return res.status(200).json(userData)
+      }
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({error :error.message});
   }
+ 
 };

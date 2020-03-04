@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StartButton from "./StartButton";
 import Stage from "./Stage";
 import Display from "./Display";
@@ -7,14 +7,25 @@ import { usePlayer } from "../hooks/usePlayer";
 import { StyledTetris, StyledTetrisWrapper } from "./styles/StyledTetris";
 import { createStage, checkCollision } from "../gameHelpers";
 import {useInterval} from '../hooks/useInterval';
-import {useGameStatus} from '../hooks/useGameStatus'
+import {useGameStatus} from '../hooks/useGameStatus';
+import {useDispatch, useSelector} from 'react-redux';
+import {getScores, addScore} from '../redux/actions/scoreActions'
 const Tetris = () => {
-  console.log("re-render");
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, rotatePlayer] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared)
+  const dispatch = useDispatch();
+  const state = useSelector(state => state)
+
+  let highestScore = state.scoreData.highestScore
+  if (highestScore){
+    highestScore = highestScore.score
+  }
+
+  const {authenticated} = state.user;
+  
   const movePlayer = dir => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
@@ -41,6 +52,9 @@ const Tetris = () => {
     else {
         if (player.pos.y < 1){
             setGameOver(true);
+            if (authenticated){
+              addScore(score, dispatch)
+            }
             setDropTime(null)
         }
         updatePlayerPos({ x: 0, y: 0, collided: true });
@@ -87,6 +101,7 @@ const Tetris = () => {
               <Display text= {`Score : ${score}`} />
               <Display text= {`Rows: ${rows}`} />
               <Display text= {`Levels : ${level}`} />
+              <Display text= {`Highest Score : ${highestScore}`} />
             </div>
           )}
           <StartButton onClick={startGame}>Start Button</StartButton>
