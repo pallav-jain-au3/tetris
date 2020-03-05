@@ -1,4 +1,4 @@
-import {SET_USER, LOADING_USER, SET_ERRORS, CLEAR_ERRORS, SET_SCORES} from '../types'
+import {SET_USER, LOADING_USER, SET_ERRORS, CLEAR_ERRORS, SET_SCORES, LOGOUT_USER} from '../types'
 const intialState = {
     user :{},
     authenticated : false,
@@ -26,6 +26,11 @@ export default function (state = intialState, action){
             }     
         case SET_SCORES :
             return state   
+
+        case LOGOUT_USER :
+            return {
+                ...state, ...intialState
+            }   
             
 
         

@@ -13,6 +13,7 @@ import AuthRoute from './AuthRoute';
 import UserScores from './components/UserScores'
 import Scores from './components/Scores';
 import {getScores} from './redux/actions/scoreActions'
+import NavBar from './components/NavBar'
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
+      <NavBar />
         <Switch>
           <Route exact path="/" component={Tetris} />
           <AuthRoute exact path="/login" component={Login} />

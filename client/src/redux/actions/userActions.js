@@ -1,6 +1,7 @@
-import {SET_USER, LOADING_USER, CLEAR_ERRORS, SET_ERRORS, SET_SCORES} from '../types';
+import {SET_USER, LOADING_USER, CLEAR_ERRORS, SET_ERRORS, LOGOUT_USER} from '../types';
 import axios from 'axios';
 import {endpoint} from '../endpoint';
+
 
 
 export const signupUser = (user, history, dispatch) => {
@@ -59,4 +60,12 @@ export const getUserData = () => dispatch =>{
 const setAuthorization = (token) => {
   localStorage.setItem("auth-token", token);
   axios.defaults.headers.common["auth-token"] = token;
+}
+
+export const logoutUser = (dispatch) => {
+    localStorage.removeItem('auth-token');
+    dispatch({
+        type:LOGOUT_USER
+    })
+    return
 }
