@@ -1,6 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import {Table} from 'react-bootstrap'
 
 function Scores() {
   const user = useSelector(state => state.user);
@@ -8,6 +11,7 @@ function Scores() {
     user: { scores, username },
     authenticated
   } = user;
+  dayjs.extend(relativeTime)
 
   return (
     <div>
@@ -20,11 +24,24 @@ function Scores() {
         </p>
       ) : scores.length ? (
         <div>
-          <ul>
-            {scores.map(score => (
-              <li key={score.scoreId}>{score.score}</li>
+          <Table>
+          <thead>
+          <th>#</th>
+          <th>Username</th>
+          <th>Score</th>
+          <th></th>
+          </thead>
+          <tbody>
+            {scores.sort((a, b) => b.score - a.score).map((score, index) => (
+              <tr key={score.scoreId}>
+              <td>{index + 1}</td>
+              <td>{username}</td>
+                <td>{score.score}</td>
+                <td>{dayjs(score.createdAt).fromNow()}</td>
+              </tr>
             ))}
-          </ul>
+            </tbody>
+          </Table>
         </div>
       ) : (
         <p>No score added</p>

@@ -1,26 +1,44 @@
-import React , {useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {getScores} from '../redux/actions/scoreActions'
-
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getScores } from "../redux/actions/scoreActions";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { ListGroup, Table } from "react-bootstrap";
 
 function Scores() {
-    const scoreData = useSelector(state => state.scoreData)
-    
-    return (
-        <div>
-            {scoreData.scores.length ? (
-                <ul>
-                    {scoreData.scores.map(score => <li key = {score._id}>
-                        <p>{score.user_id}</p>    
-                        <p>{score.createdAt}</p>  
-                        <p>{score.score}</p>
-                        
-                        </li>)}
-                </ul>
+  const scoreData = useSelector(state => state.scoreData);
+  dayjs.extend(relativeTime);
 
-            ) : (<p>Loadingg......</p>)}
-        </div>
-    )
+  return (
+    <div>
+      {scoreData.scores.length ? (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+              <th>Score</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody >
+          {scoreData.scores.map((score, index) => (
+           
+              <tr key={score._id}>
+                <td>{index + 1}</td>
+                <td>{score.username}</td>
+                <td>{score.score}</td>
+                <td>{dayjs(score.createdAt).fromNow()}</td>
+              </tr>
+           
+          ))}
+          </tbody>
+        </Table>
+      ) : (
+        <p>Loadingg......</p>
+      )}
+    </div>
+  );
 }
 
-export default Scores
+export default Scores;
