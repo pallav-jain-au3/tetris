@@ -7,7 +7,9 @@ const {
   registerUser,
   loginUser,
   getAuthenticatedUser
-} = require("./routes/routes");
+} = require("./handlers/userHandle");
+
+const {addScore, getScore} = require('./handlers/ScoresHandle')
 const auth = require("./auth");
 const cors = require("cors");
 
@@ -26,5 +28,7 @@ mongoose.connect(
 app.post("/user/register", registerUser);
 app.post("/user/login", loginUser);
 app.get("/user/auth", auth, getAuthenticatedUser);
+app.post("/score",auth,addScore )
+app.get('/scores', getScore)
 
 app.listen(PORT, () => console.log(`listenning on port ${PORT}`));

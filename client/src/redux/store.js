@@ -1,12 +1,13 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import userReducer from "./reducers/userReducers";
-
+import scoreReducer from './reducers/ScoreReducer'
 
 const intialState = {};
 const middleware = [thunk];
 const reducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  scoreData :scoreReducer
 
 });
 
