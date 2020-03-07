@@ -5,6 +5,7 @@ background-color: black;
 top: 0;
 left: 0;
 right: 0;
+max-width: 100%
 height: 50px;
 font-family : Pixel , Arial , sans-serif;
 display: flex;

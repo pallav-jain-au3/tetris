@@ -32,24 +32,34 @@ export default function Signup(props) {
 
   const [input, setInput] = useState(initialState);
   return (
-    <form onSubmit={handleSubmit}>
+    <div className = "container d-flex justify-content-center m-5">
+    <form onSubmit={handleSubmit} className = "align-items-center">
+    <div className = "form-group">
       <input
         name="username"
+        className = "form-control"
         value={input.username}
         onChange={handleChange}
         placeholder="Username...."
       />
 
       {errors.username ? <span className = "error">{errors.username}</span> : null}
-      
+      </div>
+      <div className = "form-group">
       <input
+      className = "form-control"
+        type = "password"
         name="password"
         value={input.password}
         onChange={handleChange}
         placeholder="Password...."
       />
       {errors.password ? <span className = "error">{errors.password}</span> : null}
-      <StartButton onClick ={handleSubmit}>Submit</StartButton>
+      </div>
+      <div className = "form-group">
+      <button className = "btn btn-dark" onClick ={handleSubmit}>Submit</button>
+      </div>
     </form>
+    </div>
   );
 }

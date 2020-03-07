@@ -15,7 +15,7 @@ const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
-
+console.log()
 mongoose.connect(
   process.env.DB_HOST,
   {
