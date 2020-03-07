@@ -10,10 +10,11 @@ import { SET_USER } from "./redux/types";
 import axios from "axios";
 import { getUserData } from "./redux/actions/userActions";
 import AuthRoute from './AuthRoute';
-import UserScores from './components/UserScores'
+import UserScores from './components/UserScores';
 import Scores from './components/Scores';
-import {getScores} from './redux/actions/scoreActions'
-import NavBar from './components/NavBar'
+import {getScores} from './redux/actions/scoreActions';
+import NavBar from './components/NavBar';
+import Home from './components/Home';
 
 
 const App = () => {
@@ -32,7 +33,8 @@ const App = () => {
       <Router>
       <NavBar />
         <Switch>
-          <Route exact path="/" component={Tetris} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/tetris" component={Tetris} />
           <AuthRoute exact path="/login" component={Login} />
           <AuthRoute exact path="/signup" component={Signup} />
           <Route exact path = "/user/scores" component = {UserScores} />

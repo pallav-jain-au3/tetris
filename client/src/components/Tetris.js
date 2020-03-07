@@ -9,13 +9,15 @@ import { createStage, checkCollision } from "../gameHelpers";
 import {useInterval} from '../hooks/useInterval';
 import {useGameStatus} from '../hooks/useGameStatus';
 import {useDispatch, useSelector} from 'react-redux';
-import {getScores, addScore} from '../redux/actions/scoreActions'
+import {addScore} from '../redux/actions/scoreActions'
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, rotatePlayer] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared)
+  const [start, setStart] = useState(false)
+  const [pause, setPause] = useState(false)
   const dispatch = useDispatch();
   const state = useSelector(state => state)
 
@@ -33,6 +35,7 @@ const Tetris = () => {
   };
   const startGame = () => {
     //Reset everything
+    setStart(!start)
     setStage(createStage());
     setDropTime(1000)
     resetPlayer();
@@ -52,7 +55,7 @@ const Tetris = () => {
     else {
         if (player.pos.y < 1){
             setGameOver(true);
-            if (authenticated){
+            if (authenticated && score > 0){
               addScore(score, dispatch)
             }
             setDropTime(null)
@@ -66,8 +69,10 @@ const Tetris = () => {
   };
   const move = e => {
     let { keyCode } = e;
+    e.preventDefault()
     if (!gameOver) {
       if (keyCode === 37) {
+        
         movePlayer(-1);
       } else if (keyCode === 39) {
         movePlayer(1);
@@ -84,6 +89,16 @@ const Tetris = () => {
     if (keyCode === 40){
       setDropTime(1000 / (level + 1) + 200)
     }
+  }
+
+  const pauseGame = () => {
+    setDropTime(null);
+    setPause(true)
+  }
+
+  const unpauseGame = () => {
+    setDropTime(1000 / (level + 1) + 200)
+    setPause(false)
   }
 
   useInterval(() => {
@@ -104,7 +119,13 @@ const Tetris = () => {
               <Display text= {`Highest Score : ${highestScore}`} />
             </div>
           )}
-          <StartButton onClick={startGame}>Start Button</StartButton>
+            {
+              !start ? (<StartButton onClick={startGame}>Start Button</StartButton>) :
+                !pause ? (<StartButton onClick={pauseGame}>Pause Game</StartButton>) : 
+                (<StartButton onClick={unpauseGame}>Play Game</StartButton>)
+            }
+          
+         
         </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
