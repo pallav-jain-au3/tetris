@@ -8,7 +8,10 @@ const {addScore, getScore} = require('./handlers/ScoresHandle')
 const auth = require('./auth')
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(express.json());
-require("dotenv").config();
+let result = require("dotenv").config();
+if (!result){
+  throw err
+}
 
 
 mongoose.connect(
