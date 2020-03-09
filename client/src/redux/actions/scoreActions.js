@@ -20,7 +20,8 @@ export const getScores = dispatch => {
 export const addScore = (score, dispatch) => {
     let newScore  = {score}
     axios.post(`${endpoint}/score`, newScore)
-    .then(() => {
+    .then((res) => {
+      console.log(res)
         getScores(dispatch)
     })  
     .catch(err => console.log(err)) 
