@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getScores } from "../redux/actions/scoreActions";
+import React from "react";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { ListGroup, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
 function Scores() {
   const scoreData = useSelector(state => state.scoreData);

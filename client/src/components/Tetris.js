@@ -57,6 +57,7 @@ const Tetris = () => {
       if (player.pos.y < 1) {
         setGameOver(true);
         setStart(false);
+        setPause(true)
         if (authenticated && score > 0) {
           addScore(score, dispatch);
         }
